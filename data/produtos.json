@@ -1,0 +1,51 @@
+// data/produtos.json
+[
+  {
+    "id": 1,
+    "nome": "Smartphone XYZ Pro",
+    "descricao": "O Smartphone XYZ Pro oferece desempenho excepcional com seu processador de última geração, câmera tripla de 64MP e bateria de longa duração. Ideal para quem busca um dispositivo completo para trabalho e entretenimento.",
+    "preco": "R$ 1.899,00",
+    "imagens": ["imagens/produto1-1.jpg", "imagens/produto1-2.jpg", "imagens/produto1-3.jpg"],
+    "link_afiliado": "https://link.afiliado.com/produto1"
+  },
+  {
+    "id": 2,
+    "nome": "Fone de Ouvido Bluetooth Premium",
+    "descricao": "Experimente a imersão sonora completa com nosso fone de ouvido Bluetooth Premium. Cancelamento ativo de ruído, bateria de 30 horas e design ergonômico para máximo conforto.",
+    "preco": "R$ 499,00",
+    "imagens": ["imagens/produto2-1.jpg", "imagens/produto2-2.jpg"],
+    "link_afiliado": "https://link.afiliado.com/produto2"
+  },
+  {
+    "id": 3,
+    "nome": "Smartwatch Fitness Pro",
+    "descricao": "Monitore sua saúde e desempenho físico com o Smartwatch Fitness Pro. GPS integrado, monitoramento de frequência cardíaca, resistente à água e notificações inteligentes.",
+    "preco": "R$ 799,00",
+    "imagens": ["imagens/produto3-1.jpg", "imagens/produto3-2.jpg", "imagens/produto3-3.jpg"],
+    "link_afiliado": "https://link.afiliado.com/produto3"
+  },
+  {
+    "id": 4,
+    "nome": "Tablet Multifuncional 10'",
+    "descricao": "Perfeito para trabalho e entretenimento, o Tablet Multifuncional possui tela de 10 polegadas, processador rápido, 128GB de armazenamento e suporte para caneta stylus.",
+    "preco": "R$ 1.299,00",
+    "imagens": ["imagens/produto4-1.jpg", "imagens/produto4-2.jpg"],
+    "link_afiliado": "https://link.afiliado.com/produto4"
+  },
+  {
+    "id": 5,
+    "nome": "Caixa de Som Portátil",
+    "descricao": "Leve a música para onde quiser com nossa Caixa de Som Portátil. Som potente, bateria de 20 horas, resistente à água e design compacto para máxima portabilidade.",
+    "preco": "R$ 349,00",
+    "imagens": ["imagens/produto5-1.jpg", "imagens/produto5-2.jpg"],
+    "link_afiliado": "https://link.afiliado.com/produto5"
+  },
+  {
+    "id": 6,
+    "nome": "Notebook Ultrafino 14'",
+    "descricao": "Trabalhe com eficiência e estilo com nosso Notebook Ultrafino. Tela de 14 polegadas, processador Intel Core i5, 8GB de RAM e SSD de 256GB para desempenho excepcional.",
+    "preco": "R$ 2.499,00",
+    "imagens": ["imagens/produto6-1.jpg", "imagens/produto6-2.jpg", "imagens/produto6-3.jpg"],
+    "link_afiliado": "https://link.afiliado.com/produto6"
+  }
+]

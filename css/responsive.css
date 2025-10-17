@@ -1,0 +1,112 @@
+/* css/responsive.css */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: flex;
+    }
+    
+    .nav {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 80%;
+        height: calc(100vh - 70px);
+        background-color: var(--bg-color);
+        box-shadow: var(--shadow);
+        transition: left 0.3s;
+        z-index: 99;
+    }
+    
+    .nav.active {
+        left: 0;
+    }
+    
+    .nav-list {
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+    }
+    
+    .banner-content h1 {
+        font-size: 2rem;
+    }
+    
+    .banner-content p {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    /* Footer Accordion */
+    .footer-section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-title {
+        cursor: pointer;
+        position: relative;
+        padding-right: 30px;
+    }
+    
+    .footer-title::after {
+        content: '+';
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 1.5rem;
+        background: none;
+        width: auto;
+        height: auto;
+    }
+    
+    .footer-title.active::after {
+        content: '-';
+    }
+    
+    .footer-links {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+    
+    .footer-title.active + .footer-links {
+        max-height: 500px;
+    }
+    
+    .footer-content .footer-section:first-child .footer-title {
+        cursor: default;
+        padding-right: 0;
+    }
+    
+    .footer-content .footer-section:first-child .footer-title::after {
+        display: none;
+    }
+    
+    .footer-content .footer-section:first-child .footer-links {
+        max-height: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .banner {
+        padding: 3rem 0;
+    }
+    
+    .featured-products, .categories {
+        padding: 3rem 0;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
