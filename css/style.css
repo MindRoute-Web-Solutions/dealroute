@@ -1,14 +1,14 @@
 /* css/style.css */
 :root {
-    --primary-color: #2563eb;
+    --primary-color: #0D2B4D;
     --primary-dark: #1d4ed8;
     --secondary-color: #64748b;
-    --accent-color: #f59e0b;
+    --accent-color: #F26A21;
     --text-color: #1e293b;
     --text-light: #64748b;
     --bg-color: #ffffff;
     --bg-light: #f8fafc;
-    --border-color: #e2e8f0;
+    --border-color: #F5F5F5;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --radius: 8px;
 }
@@ -89,7 +89,7 @@ body {
 
 /* Banner */
 .banner {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: var(--text-color);
     color: white;
     padding: 4rem 0;
     text-align: center;
