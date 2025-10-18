@@ -72,7 +72,12 @@ function initializeFooterAccordion() {
         // Adicionar ícone de toggle
         title.style.cursor = 'pointer';
         title.style.position = 'relative';
-        title.innerHTML += '<span class="accordion-icon">+</span>';
+        
+        // Criar elemento de ícone
+        const accordionIcon = document.createElement('span');
+        accordionIcon.className = 'accordion-icon';
+        accordionIcon.innerHTML = '+';
+        title.appendChild(accordionIcon);
         
         title.addEventListener('click', function() {
             const isActive = this.classList.contains('active');
@@ -85,7 +90,8 @@ function initializeFooterAccordion() {
                     if (otherTitle && otherLinks) {
                         otherTitle.classList.remove('active');
                         otherLinks.style.maxHeight = '0';
-                        otherTitle.querySelector('.accordion-icon').textContent = '+';
+                        const otherIcon = otherTitle.querySelector('.accordion-icon');
+                        if (otherIcon) otherIcon.innerHTML = '+';
                     }
                 }
             });
@@ -96,10 +102,10 @@ function initializeFooterAccordion() {
             
             if (this.classList.contains('active')) {
                 links.style.maxHeight = links.scrollHeight + 'px';
-                icon.textContent = '−';
+                icon.innerHTML = '−';
             } else {
                 links.style.maxHeight = '0';
-                icon.textContent = '+';
+                icon.innerHTML = '+';
             }
         });
         
@@ -183,48 +189,38 @@ function initializeProductGallery() {
     }
 }
 
-// ========== LAZY LOADING OTIMIZADO ==========
+// ========== CARROSSEL MOBILE ==========
 
 /**
- * Inicializa lazy loading para imagens
+ * Inicializa funcionalidades do carrossel mobile
  */
-function initializeLazyLoading() {
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+function initializeMobileCarousel() {
+    if (window.innerWidth > 768) return;
     
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src || img.src;
-                    img.classList.remove('lazy');
-                    imageObserver.unobserve(img);
-                }
-            });
-        });
-        
-        lazyImages.forEach(img => imageObserver.observe(img));
-    }
-}
-
-// ========== OBSERVER PARA RESPONSIVIDADE ==========
-
-/**
- * Observa mudanças no viewport e ajusta comportamentos
- */
-function initializeViewportObserver() {
-    let previousWidth = window.innerWidth;
+    const carousel = document.getElementById('featured-carousel');
+    if (!carousel) return;
     
-    window.addEventListener('resize', () => {
-        const currentWidth = window.innerWidth;
-        
-        // Re-inicializar footer accordion se mudou para/do mobile
-        if ((previousWidth <= 768 && currentWidth > 768) || 
-            (previousWidth > 768 && currentWidth <= 768)) {
-            initializeFooterAccordion();
-        }
-        
-        previousWidth = currentWidth;
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+    
+    // Touch events para swipe
+    carousel.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+    });
+    
+    carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.touches[0].pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 2;
+        carousel.scrollLeft = scrollLeft - walk;
+    });
+    
+    carousel.addEventListener('touchend', () => {
+        isDragging = false;
     });
 }
 
@@ -237,8 +233,7 @@ function initializeResponsiveFeatures() {
     initializeMobileMenu();
     initializeFooterAccordion();
     initializeProductGallery();
-    initializeLazyLoading();
-    initializeViewportObserver();
+    initializeMobileCarousel();
     
     console.log('🚀 Funcionalidades responsivas inicializadas!');
 }
@@ -250,5 +245,8 @@ document.addEventListener('DOMContentLoaded', initializeResponsiveFeatures);
 window.addEventListener('resize', () => {
     // Debounce para evitar execução excessiva
     clearTimeout(window.resizingTimeout);
-    window.resizingTimeout = setTimeout(initializeFooterAccordion, 250);
+    window.resizingTimeout = setTimeout(() => {
+        initializeFooterAccordion();
+        initializeMobileCarousel();
+    }, 250);
 });

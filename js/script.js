@@ -30,32 +30,173 @@ async function getProductsByCategory(category) {
     return products.filter(product => product.categoria === category);
 }
 
-// ========== FUNÇÕES DE EXIBIÇÃO ==========
+// ========== FUNÇÕES DO CARROSSEL ==========
 
 /**
- * Exibe produtos em destaque na página inicial
+ * Exibe produtos em destaque no carrossel
  */
 async function displayFeaturedProducts() {
     const products = await loadProducts();
-    const featuredContainer = document.getElementById('featured-products');
     
-    if (!featuredContainer) return;
+    const carouselContainer = document.getElementById('featured-carousel');
+    const secondaryContainer = document.getElementById('secondary-products');
     
-    // Limitar a 4 produtos para a página inicial
-    const featuredProducts = products.slice(0, 4);
+    if (!carouselContainer) return;
     
-    featuredContainer.innerHTML = featuredProducts.map(product => `
-        <div class="product-card">
-            <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
-            <div class="product-info">
-                <h3 class="product-name">${product.nome}</h3>
-                <p class="product-price">${product.preco}</p>
-                <p class="product-description">${product.descricao.substring(0, 100)}...</p>
-                <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
+    // Separar produtos: primeiros 10 vão para o carrossel, resto para grid
+    const featuredProducts = products.slice(0, 10);
+    const secondaryProducts = products.slice(10);
+    
+    // Carrossel Principal (até 10 produtos)
+    carouselContainer.innerHTML = featuredProducts.map(product => `
+        <div class="carrossel-item">
+            <div class="product-card">
+                <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
+                <div class="product-info">
+                    <h3 class="product-name">${product.nome}</h3>
+                    <div class="product-price-container">
+                        <span class="product-price-current">${product.preco}</span>
+                        ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                    </div>
+                    <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
+                    ${product.caracteristicas ? `
+                    <div class="product-features">
+                        ${product.caracteristicas.slice(0, 3).map(caracteristica => `
+                            <div class="product-feature">
+                                <i class="fas fa-check"></i>
+                                <span>${caracteristica}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                    <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
+                </div>
             </div>
         </div>
     `).join('');
+    
+    // Grid Secundário (produtos 11+)
+    if (secondaryProducts.length > 0 && secondaryContainer) {
+        secondaryContainer.innerHTML = `
+            <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
+            <div class="products-grid">
+                ${secondaryProducts.map(product => `
+                    <div class="product-card">
+                        <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
+                        <div class="product-info">
+                            <h3 class="product-name">${product.nome}</h3>
+                            <div class="product-price-container">
+                                <span class="product-price-current">${product.preco}</span>
+                                ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                            </div>
+                            <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 100)}...</p>
+                            ${product.caracteristicas ? `
+                            <div class="product-features">
+                                ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                                    <div class="product-feature">
+                                        <i class="fas fa-check"></i>
+                                        <span>${caracteristica}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            ` : ''}
+                            <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } else if (secondaryContainer) {
+        secondaryContainer.innerHTML = '';
+    }
+    
+    // Inicializar funcionalidades do carrossel
+    initializeCarousel();
 }
+
+/**
+ * Inicializa a funcionalidade do carrossel
+ */
+function initializeCarousel() {
+    const carousel = document.getElementById('featured-carousel');
+    const prevBtn = document.querySelector('.carrossel-btn.prev');
+    const nextBtn = document.querySelector('.carrossel-btn.next');
+    
+    if (!carousel || !prevBtn || !nextBtn) return;
+    
+    const scrollAmount = 320; // Largura do item + gap
+    
+    prevBtn.addEventListener('click', () => {
+        carousel.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        carousel.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Mostrar/ocultar botões baseado na posição do scroll
+    function updateButtonVisibility() {
+        const isAtStart = carousel.scrollLeft === 0;
+        const isAtEnd = carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10;
+        
+        prevBtn.style.display = isAtStart ? 'none' : 'flex';
+        nextBtn.style.display = isAtEnd ? 'none' : 'flex';
+    }
+    
+    carousel.addEventListener('scroll', updateButtonVisibility);
+    updateButtonVisibility(); // Estado inicial
+    
+    // Touch swipe para mobile
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+        carousel.style.cursor = 'grabbing';
+    });
+    
+    carousel.addEventListener('mouseleave', () => {
+        isDown = false;
+        carousel.style.cursor = 'grab';
+    });
+    
+    carousel.addEventListener('mouseup', () => {
+        isDown = false;
+        carousel.style.cursor = 'grab';
+    });
+    
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 2;
+        carousel.scrollLeft = scrollLeft - walk;
+    });
+    
+    // Touch events para mobile
+    carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+    });
+    
+    carousel.addEventListener('touchmove', (e) => {
+        if (!carousel) return;
+        const x = e.touches[0].pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 2;
+        carousel.scrollLeft = scrollLeft - walk;
+    });
+}
+
+// ========== FUNÇÕES DE EXIBIÇÃO ==========
 
 /**
  * Exibe todos os produtos na página de produtos
@@ -71,8 +212,21 @@ async function displayAllProducts() {
             <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
             <div class="product-info">
                 <h3 class="product-name">${product.nome}</h3>
-                <p class="product-price">${product.preco}</p>
-                <p class="product-description">${product.descricao.substring(0, 100)}...</p>
+                <div class="product-price-container">
+                    <span class="product-price-current">${product.preco}</span>
+                    ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                </div>
+                <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 100)}...</p>
+                ${product.caracteristicas ? `
+                <div class="product-features">
+                    ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                        <div class="product-feature">
+                            <i class="fas fa-check"></i>
+                            <span>${caracteristica}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
                 <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
             </div>
         </div>
@@ -101,13 +255,16 @@ async function displayProduct() {
     }
     
     // Atualizar título da página
-    document.title = `${product.nome} - TechStore`;
+    document.title = `${product.nome} - DealRoute`;
     
     // Atualizar meta description para SEO
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
         metaDescription.setAttribute('content', `${product.nome} - ${product.descricao.substring(0, 160)}...`);
     }
+    
+    // Calcular desconto se houver preço antigo
+    const discount = product.precoAntigo ? calculateDiscount(product.precoAntigo, product.preco) : null;
     
     // Exibir produto
     productContainer.innerHTML = `
@@ -121,18 +278,66 @@ async function displayProduct() {
                 `).join('')}
             </div>
         </div>
-        <div class="product-info">
+        <div class="product-info-detailed">
             <h1 class="product-title">${product.nome}</h1>
-            <p class="product-price">${product.preco}</p>
-            <div class="product-description">
+            
+            <div class="product-pricing">
+                ${product.precoAntigo ? `
+                    <span class="price-old">${product.precoAntigo}</span>
+                    ${discount ? `<span class="discount-badge">${discount}% OFF</span>` : ''}
+                ` : ''}
+                <span class="price-current">${product.preco}</span>
+            </div>
+            
+            <div class="product-description-detailed">
                 <p>${product.descricao}</p>
             </div>
-            <a href="${product.link_afiliado}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">Comprar Agora</a>
+            
+            ${product.especificacoes ? `
+            <div class="product-specs">
+                <h3 class="specs-title">Especificações Técnicas</h3>
+                <ul class="specs-list">
+                    ${product.especificacoes.map(spec => `
+                        <li>
+                            <span class="spec-name">${spec.nome}</span>
+                            <span class="spec-value">${spec.valor}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+            ` : ''}
+            
+            ${product.caracteristicas ? `
+            <div class="product-features-detailed">
+                <h3 class="specs-title">Principais Características</h3>
+                <div class="features-grid">
+                    ${product.caracteristicas.map(caracteristica => `
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span class="feature-text">${caracteristica}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            ` : ''}
+            
+            <a href="${product.link_afiliado}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
+                <i class="fas fa-shopping-cart"></i> Comprar Agora
+            </a>
         </div>
     `;
     
     // Exibir produtos relacionados
     await displayRelatedProducts(productId, product.categoria);
+}
+
+/**
+ * Calcula o percentual de desconto
+ */
+function calculateDiscount(oldPrice, currentPrice) {
+    const old = parseFloat(oldPrice.replace('R$', '').replace('.', '').replace(',', '.').trim());
+    const current = parseFloat(currentPrice.replace('R$', '').replace('.', '').replace(',', '.').trim());
+    return Math.round(((old - current) / old) * 100);
 }
 
 /**
@@ -166,7 +371,10 @@ async function displayRelatedProducts(currentProductId, category) {
                             <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
                             <div class="product-info">
                                 <h3 class="product-name">${product.nome}</h3>
-                                <p class="product-price">${product.preco}</p>
+                                <div class="product-price-container">
+                                    <span class="product-price-current">${product.preco}</span>
+                                    ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                                </div>
                                 <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
                             </div>
                         </div>
@@ -185,13 +393,85 @@ async function displayRelatedProducts(currentProductId, category) {
                     <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
                     <div class="product-info">
                         <h3 class="product-name">${product.nome}</h3>
-                        <p class="product-price">${product.preco}</p>
+                        <div class="product-price-container">
+                            <span class="product-price-current">${product.preco}</span>
+                            ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                        </div>
                         <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
                     </div>
                 </div>
             `).join('')}
         </div>
     `;
+}
+
+// ========== BOTÕES FLUTUANTES ==========
+
+/**
+ * Inicializa botões flutuantes
+ */
+function initializeFloatingButtons() {
+    // Botão Voltar ao Topo
+    const backToTopBtn = document.createElement('button');
+    backToTopBtn.className = 'floating-btn back-to-top';
+    backToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    backToTopBtn.setAttribute('aria-label', 'Voltar ao topo');
+    
+    // Botão WhatsApp
+    const whatsappBtn = document.createElement('button');
+    whatsappBtn.className = 'floating-btn whatsapp';
+    whatsappBtn.innerHTML = '<i class="fab fa-whatsapp"></i>';
+    whatsappBtn.setAttribute('aria-label', 'Fale conosco no WhatsApp');
+    
+    // Container dos botões
+    const floatingContainer = document.createElement('div');
+    floatingContainer.className = 'floating-buttons';
+    floatingContainer.appendChild(backToTopBtn);
+    floatingContainer.appendChild(whatsappBtn);
+    
+    document.body.appendChild(floatingContainer);
+    
+    // Funcionalidade Voltar ao Topo
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Mostrar/ocultar botão Voltar ao Topo
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.style.display = 'flex';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    });
+    
+    // Funcionalidade WhatsApp
+    whatsappBtn.addEventListener('click', () => {
+        const phoneNumber = '5511999999999'; // Substitua pelo seu número
+        const message = 'Olá! Gostaria de mais informações sobre os produtos.';
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    });
+}
+
+// ========== LOGO DO DESENVOLVEDOR ==========
+
+/**
+ * Adiciona logo do desenvolvedor
+ */
+function addDeveloperLogo() {
+    const developerLogo = document.createElement('div');
+    developerLogo.className = 'developer-logo';
+    developerLogo.innerHTML = `
+        <a href="https://www.mindroute.com.br" target="_blank" rel="noopener noreferrer">
+            <img src="images/mindroute_logo.png" alt="MindRoute" onerror="this.style.display='none'">
+        </a>
+    `;
+    
+    document.body.appendChild(developerLogo);
 }
 
 // ========== INICIALIZAÇÃO GLOBAL ==========
@@ -209,6 +489,10 @@ function initializePage() {
     } else if (path.endsWith('produto.html')) {
         displayProduct();
     }
+    
+    // Inicializar componentes globais
+    initializeFloatingButtons();
+    addDeveloperLogo();
 }
 
 // Inicializar quando o DOM estiver pronto

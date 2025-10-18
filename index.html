@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Produtos Eletrônicos em Promoção</title>
+    <title>DealRoute - Produtos Eletrônicos em Promoção</title>
     <meta name="description" content="Encontre os melhores produtos eletrônicos com preços incríveis. Smartphones, fones de ouvido, smartwatches e muito mais.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,7 +16,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <a href="index.html">TechStore</a>
+                    <a href="index.html">DealRoute</a>
                 </div>
                 <nav class="nav">
                     <ul class="nav-list">
@@ -49,11 +50,25 @@
     <section class="featured-products">
         <div class="container">
             <h2 class="section-title">Produtos em Destaque</h2>
-            <div class="products-grid" id="featured-products">
-                <!-- Produtos carregados via JavaScript -->
+            
+            <!-- Carrossel Principal (até 10 produtos) -->
+            <div class="carrossel-container">
+                <button class="carrossel-btn prev" aria-label="Produtos anteriores">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="carrossel" id="featured-carousel">
+                    <!-- Produtos carregados via JavaScript -->
+                </div>
+                
+                <button class="carrossel-btn next" aria-label="Próximos produtos">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
-            <div class="text-center">
-                <a href="produtos.html" class="btn btn-secondary">Ver Todos os Produtos</a>
+            
+            <!-- Grid Secundário (produtos 11+) -->
+            <div class="products-grid-secondary" id="secondary-products">
+                <!-- Produtos adicionais carregados via JavaScript -->
             </div>
         </div>
     </section>
@@ -64,22 +79,30 @@
             <h2 class="section-title">Categorias</h2>
             <div class="categories-grid">
                 <div class="category-card">
-                    <div class="category-icon">📱</div>
+                    <div class="category-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
                     <h3>Smartphones</h3>
                     <p>Os melhores modelos com preços especiais</p>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">🎧</div>
+                    <div class="category-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
                     <h3>Áudio</h3>
                     <p>Fones de ouvido e caixas de som</p>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">⌚</div>
+                    <div class="category-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
                     <h3>Wearables</h3>
                     <p>Smartwatches e acessórios</p>
                 </div>
                 <div class="category-card">
-                    <div class="category-icon">💻</div>
+                    <div class="category-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
                     <h3>Informática</h3>
                     <p>Notebooks e acessórios</p>
                 </div>
@@ -92,12 +115,12 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3 class="footer-title">TechStore</h3>
+                    <h3 class="footer-title">DealRoute</h3>
                     <p>Oferecemos os melhores produtos eletrônicos com preços competitivos e entrega rápida.</p>
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook">f</a>
-                        <a href="#" aria-label="Instagram">i</a>
-                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
                 
@@ -124,14 +147,14 @@
                 <div class="footer-section">
                     <h3 class="footer-title">Contato</h3>
                     <ul class="footer-links">
-                        <li>Email: contato@techstore.com</li>
-                        <li>Telefone: (11) 9999-9999</li>
-                        <li>Endereço: Rua Exemplo, 123 - São Paulo, SP</li>
+                        <li><i class="fas fa-envelope"></i> Email: contato@dealroute.com</li>
+                        <li><i class="fas fa-phone"></i> Telefone: (11) 9999-9999</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Endereço: Rua Exemplo, 123 - São Paulo, SP</li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 TechStore. Todos os direitos reservados.</p>
+                <p>&copy; 2023 DealRoute. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
