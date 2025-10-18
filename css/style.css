@@ -253,14 +253,18 @@ body {
     margin-top: 3rem;
 }
 
+/* ========== PRODUCT CARDS CORRIGIDOS ========== */
 .product-card {
     background-color: var(--branco);
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: transform 0.3s, box-shadow 0.3s;
-    height: 100%;
     border: 1px solid var(--border-color);
+    /* ALTURA FLEXÍVEL - remove altura fixa */
+    display: flex;
+    flex-direction: column;
+    min-height: 420px; /* Altura mínima segura */
 }
 
 .product-card:hover {
@@ -270,37 +274,47 @@ body {
 
 .product-image {
     width: 100%;
-    height: 220px;
+    height: 180px;
     object-fit: contain;
     padding: 1rem;
     background: var(--branco);
+    flex-shrink: 0;
 }
 
 .product-info {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .product-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--azul);
-    line-height: 1.4;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.6em;
 }
 
 .product-price-container {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .product-price-current {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--laranja);
     display: block;
 }
 
 .product-price-old {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--cinza-texto);
     text-decoration: line-through;
     display: block;
@@ -308,27 +322,41 @@ body {
 
 .product-description {
     color: var(--cinza-texto);
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Aumentado para 3 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-shrink: 0;
+    min-height: 3.6em; /* Garante espaço para 3 linhas */
 }
 
 .product-features {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
 }
 
 .product-feature {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
     color: var(--cinza-texto);
 }
 
 .product-feature i {
     color: var(--laranja);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+}
+
+/* Product Actions - GARANTIR QUE O BOTÃO SEMPRE FIQUE VISÍVEL */
+.product-actions {
+    margin-top: auto;
+    padding-top: 1rem;
+    flex-shrink: 0;
 }
 
 .text-center {
@@ -453,40 +481,55 @@ body {
     background-color: var(--laranja);
 }
 
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+/* Footer Bottom - Layout Desktop */
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding-top: 1.5rem;
-    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-copy {
     color: #94a3b8;
+    font-size: 0.9rem;
 }
 
-/* Developer Logo */
-.developer-logo {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    background: var(--branco);
-    padding: 10px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-}
-
-.developer-logo a {
+/* MindRoute Logo NO FOOTER - Desktop */
+.mindroute-logo {
     display: flex;
     align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: var(--azul);
-    font-size: 0.8rem;
-    font-weight: 500;
+    gap: 10px;
+    color: #ccc;
 }
 
-.developer-logo img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
+.mindroute-logo a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.mindroute-logo a:hover {
+    color: var(--laranja);
+}
+
+.mindroute-logo img {
+    height: 100px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.mindroute-logo a:hover img {
+    transform: scale(1.05);
+}
+
+.mindroute-logo p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 /* Product Page Styles */
@@ -674,11 +717,11 @@ body {
     border: 1px solid var(--border-color);
 }
 
-/* Floating Buttons */
+/* Floating Buttons - APENAS MOBILE */
 .floating-buttons {
     position: fixed;
     bottom: 20px;
-    left: 20px;
+    right: 20px;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -714,38 +757,155 @@ body {
     background: #128C7E;
 }
 
-/* Hide carrossel buttons on mobile by default */
+/* Esconder botões flutuantes no desktop */
+@media (min-width: 769px) {
+    .floating-buttons {
+        display: none;
+    }
+}
+
+/* Mostrar botões flutuantes apenas no mobile */
 @media (max-width: 768px) {
-    .carrossel-btn {
-        display: none;
-    }
-    
-    .carrossel {
-        padding: 1rem 0;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-    
-    .carrossel::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .developer-logo {
-        position: static;
-        margin-top: 2rem;
-        text-align: center;
-        background: transparent;
-        box-shadow: none;
-        border: none;
-    }
-    
-    .developer-logo a {
-        justify-content: center;
-        color: var(--branco);
-    }
-    
     .floating-buttons {
         display: flex;
     }
+}
+
+/* ========== NOVOS ESTILOS ADICIONADOS ========== */
+
+/* Filtros e Busca */
+.products-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--azul);
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cinza-texto);
+}
+
+#category-filter {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    background: var(--branco);
+    color: var(--preto);
+    min-width: 200px;
+}
+
+.results-info {
+    margin-bottom: 1.5rem;
+}
+
+.results-info p {
+    color: var(--cinza-texto);
+    font-size: 0.9rem;
+}
+
+/* Loading States */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: var(--cinza-texto);
+    grid-column: 1 / -1;
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--laranja);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* No Results */
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--cinza-texto);
+    grid-column: 1 / -1;
+}
+
+.no-results i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}
+
+.no-results h3 {
+    margin-bottom: 0.5rem;
+    color: var(--preto);
+}
+
+/* Skeleton Loading */
+.skeleton-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton-card {
+    height: 460px;
+    border-radius: var(--radius);
+    background: var(--cinza);
+}
+
+.skeleton-image {
+    height: 180px;
+    background: #e0e0e0;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.skeleton-text {
+    height: 1rem;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-text.medium {
+    width: 80%;
 }

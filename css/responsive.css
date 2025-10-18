@@ -37,13 +37,10 @@
         font-size: 1.75rem;
     }
     
-    /* Carrossel Mobile */
+    /* ========== CARROSSEL MOBILE CORRIGIDO ========== */
     .carrossel-container {
         padding: 0 15px;
-    }
-    
-    .carrossel-item {
-        flex: 0 0 85%;
+        position: relative;
     }
     
     .carrossel {
@@ -51,10 +48,44 @@
         padding: 1rem 0.5rem;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; /* Scroll suave no iOS */
+        scrollbar-width: none; /* Esconde scrollbar Firefox */
+        -ms-overflow-style: none; /* Esconde scrollbar IE/Edge */
+    }
+    
+    .carrossel::-webkit-scrollbar {
+        display: none; /* Esconde scrollbar Chrome/Safari */
     }
     
     .carrossel-item {
-        scroll-snap-align: start;
+        flex: 0 0 85%;
+        scroll-snap-align: center; /* Centraliza o item ao fazer scroll */
+        margin: 0 auto;
+    }
+    
+    /* Remove setas no mobile */
+    .carrossel-btn {
+        display: none !important;
+    }
+    
+    /* Product Cards Mobile - Altura flexível */
+    .product-card {
+        height: auto; /* Altura automática no mobile */
+        min-height: 480px; /* Altura mínima maior */
+    }
+    
+    .product-image {
+        height: 200px; /* Imagem um pouco maior no mobile */
+    }
+    
+    .product-name {
+        font-size: 1.1rem; /* Fonte maior no mobile */
+        -webkit-line-clamp: 3; /* Mais linhas no mobile */
+    }
+    
+    .product-description {
+        font-size: 0.9rem; /* Fonte maior no mobile */
+        -webkit-line-clamp: 3; /* Mais linhas no mobile */
     }
     
     /* Product Page Mobile */
@@ -73,6 +104,13 @@
     
     .features-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* Footer Mobile */
+    .footer-bottom-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
     }
     
     /* Footer Accordion */
@@ -121,9 +159,47 @@
         max-height: none;
     }
     
-    /* Hide developer logo on mobile in footer */
-    .developer-logo {
-        display: none;
+    /* MindRoute Logo Mobile */
+    .mindroute-logo {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    
+    .mindroute-logo a {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .mindroute-logo img {
+        height: 100px;
+    }
+    
+    .mindroute-logo p {
+        font-size: 0.8rem;
+    }
+    
+    /* Filtros Mobile */
+    .products-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-box {
+        min-width: auto;
+    }
+    
+    #category-filter {
+        min-width: auto;
+    }
+    
+    /* Loading Mobile */
+    .loading-spinner {
+        padding: 2rem;
+    }
+    
+    .loading-spinner i {
+        font-size: 1.5rem;
     }
 }
 
@@ -150,7 +226,7 @@
     }
     
     .carrossel-item {
-        flex: 0 0 80%;
+        flex: 0 0 90%; /* Mais largura em telas muito pequenas */
     }
     
     .product-info-detailed .product-title {
@@ -163,12 +239,69 @@
     
     .floating-buttons {
         bottom: 15px;
-        left: 15px;
+        right: 15px;
     }
     
     .floating-btn {
         width: 45px;
         height: 45px;
         font-size: 1rem;
+    }
+    
+    .product-card {
+        min-height: 460px; /* Altura um pouco menor em telas muito pequenas */
+    }
+    
+    /* Filtros Mobile Pequeno */
+    .products-filters {
+        gap: 0.75rem;
+    }
+    
+    .search-box input,
+    #category-filter {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.85rem;
+    }
+    
+    .search-box i {
+        left: 0.875rem;
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 30px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .carrossel-item {
+        flex: 0 0 260px;
+    }
+    
+    .product-card {
+        height: auto; /* Altura flexível no tablet também */
+        min-height: 440px;
+    }
+    
+    .product-image {
+        height: 160px;
+    }
+    
+    /* Filtros Tablet */
+    .products-filters {
+        gap: 1rem;
+    }
+    
+    .search-box {
+        min-width: 200px;
+    }
+    
+    #category-filter {
+        min-width: 180px;
     }
 }
