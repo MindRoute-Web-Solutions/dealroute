@@ -201,6 +201,93 @@
     .loading-spinner i {
         font-size: 1.5rem;
     }
+    
+    /* ========== SOBRE RESPONSIVO ========== */
+    .about-section {
+        padding: 3rem 0;
+    }
+    
+    .about-features {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .about-feature {
+        padding: 1.25rem;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .about-feature i {
+        margin-bottom: 0.5rem;
+    }
+    
+    .about-security {
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .about-text p {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
+    .about-security p {
+        text-align: left;
+    }
+    
+    /* ========== FAQ RESPONSIVO ========== */
+    .faq-section {
+        padding: 3rem 0;
+    }
+    
+    .faq-question {
+        padding: 1.25rem;
+    }
+    
+    .faq-question h3 {
+        font-size: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .faq-answer {
+        padding: 0 1.25rem;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 0 1.25rem 1.25rem;
+    }
+    
+    /* ========== CARROSSEL SECUNDÁRIO MOBILE ========== */
+    .secondary-carousel {
+        padding: 0 15px;
+    }
+    
+    .secondary-carrossel {
+        gap: 1rem;
+        padding: 1rem 0.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .secondary-carrossel::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .secondary-carrossel .carrossel-item {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+        margin: 0 auto;
+    }
+    
+    /* Remove setas no mobile */
+    .secondary-carousel .carrossel-btn {
+        display: none !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -265,6 +352,37 @@
     
     .search-box i {
         left: 0.875rem;
+    }
+    
+    /* SOBRE MOBILE PEQUENO */
+    .about-feature {
+        padding: 1rem;
+    }
+    
+    .about-security {
+        padding: 1.25rem;
+    }
+    
+    /* FAQ MOBILE PEQUENO */
+    .faq-question {
+        padding: 1rem;
+    }
+    
+    .faq-question h3 {
+        font-size: 0.95rem;
+    }
+    
+    .faq-answer {
+        padding: 0 1rem;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding: 0 1rem 1rem;
+    }
+    
+    /* CARROSSEL SECUNDÁRIO MOBILE PEQUENO */
+    .secondary-carrossel .carrossel-item {
+        flex: 0 0 90%;
     }
 }
 

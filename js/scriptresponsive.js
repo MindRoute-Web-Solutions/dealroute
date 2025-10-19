@@ -240,6 +240,111 @@ function initializeMobileCarousel() {
     });
 }
 
+// ========== CARROSSEL SECUNDÁRIO MOBILE ==========
+
+function initializeSecondaryMobileCarousel() {
+    if (window.innerWidth > 768) return;
+    
+    const secondaryCarousel = document.getElementById('secondary-carousel');
+    if (!secondaryCarousel) return;
+    
+    // Remover setas no mobile
+    const prevBtn = document.querySelector('.secondary-carousel .prev');
+    const nextBtn = document.querySelector('.secondary-carousel .next');
+    
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    
+    // Configurar scroll suave
+    secondaryCarousel.style.scrollBehavior = 'smooth';
+    secondaryCarousel.style.scrollSnapType = 'x mandatory';
+    
+    // Touch events melhorados para scroll vertical
+    let startX, startY, scrollLeft, isHorizontalScroll;
+    
+    secondaryCarousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX - secondaryCarousel.offsetLeft;
+        startY = e.touches[0].pageY - secondaryCarousel.offsetTop;
+        scrollLeft = secondaryCarousel.scrollLeft;
+        isHorizontalScroll = false;
+    });
+    
+    secondaryCarousel.addEventListener('touchmove', (e) => {
+        if (!startX || !startY) return;
+        
+        const x = e.touches[0].pageX - secondaryCarousel.offsetLeft;
+        const y = e.touches[0].pageY - secondaryCarousel.offsetTop;
+        
+        // Determinar se é scroll horizontal ou vertical
+        if (!isHorizontalScroll) {
+            const diffX = Math.abs(x - startX);
+            const diffY = Math.abs(y - startY);
+            
+            // Se movimento horizontal for maior que vertical, é scroll horizontal
+            if (diffX > diffY) {
+                isHorizontalScroll = true;
+                e.preventDefault();
+            }
+        }
+        
+        if (isHorizontalScroll) {
+            const walk = (x - startX) * 2;
+            secondaryCarousel.scrollLeft = scrollLeft - walk;
+        }
+    });
+    
+    secondaryCarousel.addEventListener('touchend', () => {
+        startX = null;
+        startY = null;
+        isHorizontalScroll = false;
+    });
+}
+
+// ========== FAQ ACCORDION ==========
+
+function initializeFAQAccordion() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    if (faqItems.length === 0) return;
+    
+    faqItems.forEach((item, index) => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        
+        if (!question || !answer) return;
+        
+        question.addEventListener('click', function() {
+            const isActive = item.classList.contains('active');
+            
+            // Fechar todos os outros itens
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    if (otherAnswer) {
+                        otherAnswer.style.maxHeight = '0';
+                    }
+                }
+            });
+            
+            // Alternar item atual
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            } else {
+                item.classList.remove('active');
+                answer.style.maxHeight = '0';
+            }
+        });
+        
+        // Touch events para mobile
+        question.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            this.click();
+        });
+    });
+}
+
 // ========== INICIALIZAÇÃO RESPONSIVA ==========
 
 function initializeResponsiveFeatures() {
@@ -247,6 +352,8 @@ function initializeResponsiveFeatures() {
     initializeFooterAccordion();
     initializeProductGallery();
     initializeMobileCarousel();
+    initializeSecondaryMobileCarousel();
+    initializeFAQAccordion();
 }
 
 // Inicializar quando o DOM estiver pronto
@@ -258,5 +365,7 @@ window.addEventListener('resize', () => {
     window.resizingTimeout = setTimeout(() => {
         initializeFooterAccordion();
         initializeMobileCarousel();
+        initializeSecondaryMobileCarousel();
+        initializeFAQAccordion();
     }, 250);
 });
