@@ -47,7 +47,7 @@ function initializeMobileMenu() {
     });
 }
 
-// ========== FOOTER ACCORDION MOBILE ==========
+// ========== FOOTER ACCORDION MOBILE CORRIGIDO ==========
 
 function initializeFooterAccordion() {
     if (window.innerWidth > 768) return;
@@ -63,38 +63,46 @@ function initializeFooterAccordion() {
         
         if (!title || !links) return;
         
+        // Remover accordions anteriores para evitar duplicação
+        const existingIcon = title.querySelector('.footer-accordion-icon');
+        if (existingIcon) existingIcon.remove();
+        
         // Adicionar ícone de toggle
         title.style.cursor = 'pointer';
         title.style.position = 'relative';
         
-        // Criar elemento de ícone
+        // Criar elemento de ícone com classe específica
         const accordionIcon = document.createElement('span');
-        accordionIcon.className = 'accordion-icon';
+        accordionIcon.className = 'footer-accordion-icon';
         accordionIcon.innerHTML = '+';
+        accordionIcon.style.position = 'absolute';
+        accordionIcon.style.right = '0';
+        accordionIcon.style.top = '50%';
+        accordionIcon.style.transform = 'translateY(-50%)';
         title.appendChild(accordionIcon);
         
         title.addEventListener('click', function() {
-            const isActive = this.classList.contains('active');
+            const isActive = this.classList.contains('footer-active');
             
-            // Fechar todos os outros
+            // Fechar todos os outros do FOOTER
             footerSections.forEach(s => {
                 if (s !== section) {
                     const otherTitle = s.querySelector('.footer-title');
                     const otherLinks = s.querySelector('.footer-links');
                     if (otherTitle && otherLinks) {
-                        otherTitle.classList.remove('active');
+                        otherTitle.classList.remove('footer-active');
                         otherLinks.style.maxHeight = '0';
-                        const otherIcon = otherTitle.querySelector('.accordion-icon');
+                        const otherIcon = otherTitle.querySelector('.footer-accordion-icon');
                         if (otherIcon) otherIcon.innerHTML = '+';
                     }
                 }
             });
             
             // Alternar atual
-            this.classList.toggle('active');
-            const icon = this.querySelector('.accordion-icon');
+            this.classList.toggle('footer-active');
+            const icon = this.querySelector('.footer-accordion-icon');
             
-            if (this.classList.contains('active')) {
+            if (this.classList.contains('footer-active')) {
                 links.style.maxHeight = links.scrollHeight + 'px';
                 icon.innerHTML = '−';
             } else {
@@ -105,6 +113,8 @@ function initializeFooterAccordion() {
         
         // Inicialmente fechado
         links.style.maxHeight = '0';
+        links.style.overflow = 'hidden';
+        links.style.transition = 'max-height 0.3s ease-out';
     });
 }
 
@@ -300,7 +310,7 @@ function initializeSecondaryMobileCarousel() {
     });
 }
 
-// ========== FAQ ACCORDION ==========
+// ========== FAQ ACCORDION CORRIGIDO ==========
 
 function initializeFAQAccordion() {
     const faqItems = document.querySelectorAll('.faq-item');
@@ -313,13 +323,17 @@ function initializeFAQAccordion() {
         
         if (!question || !answer) return;
         
-        question.addEventListener('click', function() {
-            const isActive = item.classList.contains('active');
+        // Remover event listeners anteriores para evitar duplicação
+        question.replaceWith(question.cloneNode(true));
+        const newQuestion = item.querySelector('.faq-question');
+        
+        newQuestion.addEventListener('click', function() {
+            const isActive = item.classList.contains('faq-active');
             
-            // Fechar todos os outros itens
+            // Fechar todos os outros itens do FAQ
             faqItems.forEach(otherItem => {
                 if (otherItem !== item) {
-                    otherItem.classList.remove('active');
+                    otherItem.classList.remove('faq-active');
                     const otherAnswer = otherItem.querySelector('.faq-answer');
                     if (otherAnswer) {
                         otherAnswer.style.maxHeight = '0';
@@ -330,21 +344,19 @@ function initializeFAQAccordion() {
             
             // Alternar item atual
             if (!isActive) {
-                item.classList.add('active');
+                item.classList.add('faq-active');
                 answer.style.maxHeight = answer.scrollHeight + 'px';
                 answer.style.padding = '0 1.5rem 1.5rem';
             } else {
-                item.classList.remove('active');
+                item.classList.remove('faq-active');
                 answer.style.maxHeight = '0';
                 answer.style.padding = '0 1.5rem';
             }
         });
         
-        // Touch events para mobile
-        question.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            this.click();
-        });
+        // Inicialmente fechado
+        answer.style.maxHeight = '0';
+        answer.style.padding = '0 1.5rem';
     });
 }
 
@@ -405,11 +417,11 @@ function initializeCategoriesCarousel() {
 
 function initializeResponsiveFeatures() {
     initializeMobileMenu();
-    initializeFooterAccordion();
+    initializeFooterAccordion(); // Primeiro o footer
     initializeProductGallery();
     initializeMobileCarousel();
     initializeSecondaryMobileCarousel();
-    initializeFAQAccordion();
+    initializeFAQAccordion(); // Depois o FAQ
     initializeCategoriesCarousel();
 }
 

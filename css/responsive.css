@@ -48,18 +48,18 @@
         padding: 1rem 0.5rem;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch; /* Scroll suave no iOS */
-        scrollbar-width: none; /* Esconde scrollbar Firefox */
-        -ms-overflow-style: none; /* Esconde scrollbar IE/Edge */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
     
     .carrossel::-webkit-scrollbar {
-        display: none; /* Esconde scrollbar Chrome/Safari */
+        display: none;
     }
     
     .carrossel-item {
         flex: 0 0 85%;
-        scroll-snap-align: center; /* Centraliza o item ao fazer scroll */
+        scroll-snap-align: center;
         margin: 0 auto;
     }
     
@@ -70,7 +70,7 @@
     
     /* CARROSSEL SECUNDÁRIO MOBILE - MESMO ESTILO */
     .secondary-carousel {
-        display: block; /* MANTÉM VISÍVEL NO MOBILE */
+        display: block;
     }
     
     .secondary-carousel .carrossel-container {
@@ -108,22 +108,22 @@
     
     /* Product Cards Mobile - Altura flexível */
     .product-card {
-        height: auto; /* Altura automática no mobile */
-        min-height: 520px; /* Altura mínima maior para mais conteúdo */
+        height: auto;
+        min-height: 520px;
     }
     
     .product-image {
-        height: 200px; /* Imagem um pouco maior no mobile */
+        height: 200px;
     }
     
     .product-name {
-        font-size: 1.1rem; /* Fonte maior no mobile */
-        -webkit-line-clamp: 3; /* Mais linhas no mobile */
+        font-size: 1.1rem;
+        -webkit-line-clamp: 3;
     }
     
     .product-description {
-        font-size: 0.9rem; /* Fonte maior no mobile */
-        -webkit-line-clamp: 4; /* Mais linhas no mobile */
+        font-size: 0.9rem;
+        -webkit-line-clamp: 4;
     }
     
     /* Product Page Mobile */
@@ -151,7 +151,7 @@
         text-align: center;
     }
     
-    /* Footer Accordion */
+    /* Footer Accordion - CLASSES ESPECÍFICAS PARA EVITAR CONFLITO */
     .footer-section {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -162,16 +162,17 @@
         padding-right: 30px;
     }
     
-    .accordion-icon {
+    .footer-accordion-icon {
         position: absolute;
         right: 0;
-        top: 0;
+        top: 50%;
+        transform: translateY(-50%);
         font-size: 1.2rem;
         transition: transform 0.3s;
     }
     
-    .footer-title.active .accordion-icon {
-        transform: rotate(45deg);
+    .footer-title.footer-active .footer-accordion-icon {
+        transform: translateY(-50%) rotate(45deg);
     }
     
     .footer-links {
@@ -180,7 +181,7 @@
         transition: max-height 0.3s ease-out;
     }
     
-    .footer-title.active + .footer-links {
+    .footer-title.footer-active + .footer-links {
         max-height: 500px;
     }
     
@@ -195,6 +196,11 @@
     
     .footer-content .footer-section:first-child .footer-links {
         max-height: none;
+    }
+    
+    /* FAQ Accordion - CLASSES ESPECÍFICAS PARA EVITAR CONFLITO */
+    .faq-item.faq-active .faq-question i {
+        transform: rotate(180deg);
     }
     
     /* MindRoute Logo Mobile */
@@ -293,7 +299,7 @@
         padding: 0 1.25rem;
     }
     
-    .faq-item.active .faq-answer {
+    .faq-item.faq-active .faq-answer {
         padding: 0 1.25rem 1.25rem;
     }
 }
@@ -321,11 +327,11 @@
     }
     
     .carrossel-item {
-        flex: 0 0 90%; /* Mais largura em telas muito pequenas */
+        flex: 0 0 90%;
     }
     
     .secondary-carousel .carrossel-item {
-        flex: 0 0 90%; /* Mesma largura para o carrossel secundário */
+        flex: 0 0 90%;
     }
     
     .product-info-detailed .product-title {
@@ -348,7 +354,7 @@
     }
     
     .product-card {
-        min-height: 500px; /* Altura um pouco menor em telas muito pequenas */
+        min-height: 500px;
     }
     
     /* Filtros Mobile Pequeno */
@@ -388,7 +394,7 @@
         padding: 0 1rem;
     }
     
-    .faq-item.active .faq-answer {
+    .faq-item.faq-active .faq-answer {
         padding: 0 1rem 1rem;
     }
 }
@@ -409,11 +415,11 @@
     }
     
     .secondary-carousel .carrossel-item {
-        flex: 0 0 260px; /* Mesma largura para o carrossel secundário */
+        flex: 0 0 260px;
     }
     
     .product-card {
-        height: auto; /* Altura flexível no tablet também */
+        height: auto;
         min-height: 480px;
     }
     
@@ -449,7 +455,7 @@
     .secondary-carousel .carrossel-container {
         position: relative;
         margin: 2rem 0;
-        padding: 0 40px;
+        padding: 0 20px;
     }
     
     .secondary-carousel .carrossel {
@@ -461,7 +467,7 @@
     }
     
     .secondary-carousel .carrossel-item {
-        flex: 0 0 280px; /* MESMA LARGURA DO CARROSSEL PRINCIPAL */
+        flex: 0 0 280px;
         background: var(--branco);
         border-radius: var(--radius);
         box-shadow: var(--shadow);
@@ -544,11 +550,11 @@
 /* Ajustes de performance para dispositivos com pouca memória */
 @media (max-width: 768px) and (orientation: landscape) {
     .product-card {
-        min-height: 460px; /* Altura menor em landscape */
+        min-height: 460px;
     }
     
     .product-image {
-        height: 150px; /* Imagem menor em landscape */
+        height: 150px;
     }
 }
 
