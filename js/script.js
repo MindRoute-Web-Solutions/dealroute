@@ -79,55 +79,56 @@ function displayFeaturedProducts() {
     
     // Carrossel Secundário (Mais Produtos em Destaque) - SEMPRE CARROSSEL
     if (secondaryProducts.length > 0 && secondaryContainer) {
+        // MUDE o class para secondary-carousel em vez de products-grid-secondary
+        secondaryContainer.className = 'secondary-carousel';
+        
         secondaryContainer.innerHTML = `
             <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
-            <div class="secondary-carousel">
-                <div class="carrossel-container">
-                    <button class="carrossel-btn prev secondary-prev" aria-label="Produtos anteriores">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    
-                    <div class="carrossel secondary-carrossel" id="secondary-carousel">
-                        ${secondaryProducts.map(product => `
-                            <div class="carrossel-item">
-                                <div class="product-card">
-                                    <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
-                                    <div class="product-info">
-                                        <h3 class="product-name">${product.nome}</h3>
-                                        <div class="product-price-container">
-                                            <span class="product-price-current">${product.preco}</span>
-                                            ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
-                                        </div>
-                                        <p class="product-description">${product.descricaoCurta || product.descricao}</p>
-                                        ${product.caracteristicas ? `
-                                        <div class="product-features">
-                                            ${product.caracteristicas.slice(0, 4).map(caracteristica => `
-                                                <div class="product-feature">
-                                                    <i class="fas fa-check"></i>
-                                                    <span>${caracteristica}</span>
-                                                </div>
-                                            `).join('')}
-                                            ${product.caracteristicas.length > 4 ? `
-                                                <div class="product-feature">
-                                                    <i class="fas fa-plus"></i>
-                                                    <span>+${product.caracteristicas.length - 4} mais</span>
-                                                </div>
-                                            ` : ''}
-                                        </div>
+            <div class="carrossel-container">
+                <button class="carrossel-btn prev secondary-prev" aria-label="Produtos anteriores">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="carrossel secondary-carrossel" id="secondary-carousel">
+                    ${secondaryProducts.map(product => `
+                        <div class="carrossel-item">
+                            <div class="product-card">
+                                <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
+                                <div class="product-info">
+                                    <h3 class="product-name">${product.nome}</h3>
+                                    <div class="product-price-container">
+                                        <span class="product-price-current">${product.preco}</span>
+                                        ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                                    </div>
+                                    <p class="product-description">${product.descricaoCurta || product.descricao}</p>
+                                    ${product.caracteristicas ? `
+                                    <div class="product-features">
+                                        ${product.caracteristicas.slice(0, 4).map(caracteristica => `
+                                            <div class="product-feature">
+                                                <i class="fas fa-check"></i>
+                                                <span>${caracteristica}</span>
+                                            </div>
+                                        `).join('')}
+                                        ${product.caracteristicas.length > 4 ? `
+                                            <div class="product-feature">
+                                                <i class="fas fa-plus"></i>
+                                                <span>+${product.caracteristicas.length - 4} mais</span>
+                                            </div>
                                         ` : ''}
-                                        <div class="product-actions">
-                                            <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
-                                        </div>
+                                    </div>
+                                    ` : ''}
+                                    <div class="product-actions">
+                                        <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
                                     </div>
                                 </div>
                             </div>
-                        `).join('')}
-                    </div>
-                    
-                    <button class="carrossel-btn next secondary-next" aria-label="Próximos produtos">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                        </div>
+                    `).join('')}
                 </div>
+                
+                <button class="carrossel-btn next secondary-next" aria-label="Próximos produtos">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         `;
         

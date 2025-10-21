@@ -173,7 +173,7 @@ body {
 .carrossel-container {
     position: relative;
     margin: 2rem 0;
-    padding: 0 40px;
+    padding: 0 20px;
 }
 
 .carrossel {
@@ -614,7 +614,7 @@ body {
 .secondary-carousel .carrossel-container {
     position: relative;
     margin: 2rem 0;
-    padding: 0 40px;
+    padding: 0 20px;
 }
 
 .secondary-carousel .carrossel {
