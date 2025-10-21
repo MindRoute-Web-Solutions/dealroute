@@ -41,7 +41,7 @@ function displayFeaturedProducts() {
     const featuredProducts = products.slice(0, 4);
     const secondaryProducts = products.slice(4);
     
-    // Carrossel Principal
+    // Carrossel Principal - EXIBINDO TODO O CONTEÚDO
     carouselContainer.innerHTML = featuredProducts.map(product => `
         <div class="carrossel-item">
             <div class="product-card">
@@ -52,15 +52,21 @@ function displayFeaturedProducts() {
                         <span class="product-price-current">${product.preco}</span>
                         ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
                     </div>
-                    <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 70)}...</p>
+                    <p class="product-description">${product.descricaoCurta || product.descricao}</p>
                     ${product.caracteristicas ? `
                     <div class="product-features">
-                        ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                        ${product.caracteristicas.slice(0, 4).map(caracteristica => `
                             <div class="product-feature">
                                 <i class="fas fa-check"></i>
                                 <span>${caracteristica}</span>
                             </div>
                         `).join('')}
+                        ${product.caracteristicas.length > 4 ? `
+                            <div class="product-feature">
+                                <i class="fas fa-plus"></i>
+                                <span>+${product.caracteristicas.length - 4} mais</span>
+                            </div>
+                        ` : ''}
                     </div>
                     ` : ''}
                     <div class="product-actions">
@@ -71,13 +77,12 @@ function displayFeaturedProducts() {
         </div>
     `).join('');
     
-    // Carrossel Secundário (Mais Produtos em Destaque)
+    // Carrossel Secundário (Mais Produtos em Destaque) - SEMPRE CARROSSEL
     if (secondaryProducts.length > 0 && secondaryContainer) {
-        // Desktop: Carrossel com setas, Mobile: Grid
-        if (window.innerWidth > 768) {
-            secondaryContainer.innerHTML = `
-                <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
-                <div class="carrossel-container secondary-carousel">
+        secondaryContainer.innerHTML = `
+            <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
+            <div class="secondary-carousel">
+                <div class="carrossel-container">
                     <button class="carrossel-btn prev secondary-prev" aria-label="Produtos anteriores">
                         <i class="fas fa-chevron-left"></i>
                     </button>
@@ -93,15 +98,21 @@ function displayFeaturedProducts() {
                                             <span class="product-price-current">${product.preco}</span>
                                             ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
                                         </div>
-                                        <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
+                                        <p class="product-description">${product.descricaoCurta || product.descricao}</p>
                                         ${product.caracteristicas ? `
                                         <div class="product-features">
-                                            ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                                            ${product.caracteristicas.slice(0, 4).map(caracteristica => `
                                                 <div class="product-feature">
                                                     <i class="fas fa-check"></i>
                                                     <span>${caracteristica}</span>
                                                 </div>
                                             `).join('')}
+                                            ${product.caracteristicas.length > 4 ? `
+                                                <div class="product-feature">
+                                                    <i class="fas fa-plus"></i>
+                                                    <span>+${product.caracteristicas.length - 4} mais</span>
+                                                </div>
+                                            ` : ''}
                                         </div>
                                         ` : ''}
                                         <div class="product-actions">
@@ -117,44 +128,11 @@ function displayFeaturedProducts() {
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
-            `;
-            
-            // Inicializar carrossel secundário para desktop
-            initializeSecondaryCarousel();
-        } else {
-            // Mobile: Grid normal
-            secondaryContainer.innerHTML = `
-                <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
-                <div class="products-grid">
-                    ${secondaryProducts.map(product => `
-                        <div class="product-card">
-                            <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
-                            <div class="product-info">
-                                <h3 class="product-name">${product.nome}</h3>
-                                <div class="product-price-container">
-                                    <span class="product-price-current">${product.preco}</span>
-                                    ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
-                                </div>
-                                <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
-                                ${product.caracteristicas ? `
-                                <div class="product-features">
-                                    ${product.caracteristicas.slice(0, 2).map(caracteristica => `
-                                        <div class="product-feature">
-                                            <i class="fas fa-check"></i>
-                                            <span>${caracteristica}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                ` : ''}
-                                <div class="product-actions">
-                                    <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
+            </div>
+        `;
+        
+        // Inicializar carrossel secundário
+        initializeSecondaryCarousel();
     } else if (secondaryContainer) {
         secondaryContainer.innerHTML = '';
     }
@@ -199,11 +177,10 @@ function initializeCarousel() {
     updateButtonVisibility();
 }
 
-// Adicione esta nova função para o carrossel secundário
 function initializeSecondaryCarousel() {
     const carousel = document.getElementById('secondary-carousel');
-    const prevBtn = document.querySelector('.secondary-carousel .prev');
-    const nextBtn = document.querySelector('.secondary-carousel .next');
+    const prevBtn = document.querySelector('.secondary-carousel .carrossel-btn.prev');
+    const nextBtn = document.querySelector('.secondary-carousel .carrossel-btn.next');
     
     if (!carousel || !prevBtn || !nextBtn) return;
     
@@ -274,15 +251,21 @@ function displayAllProducts() {
                     <span class="product-price-current">${product.preco}</span>
                     ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
                 </div>
-                <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
+                <p class="product-description">${product.descricaoCurta || product.descricao}</p>
                 ${product.caracteristicas ? `
                 <div class="product-features">
-                    ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                    ${product.caracteristicas.slice(0, 3).map(caracteristica => `
                         <div class="product-feature">
                             <i class="fas fa-check"></i>
                             <span>${caracteristica}</span>
                         </div>
                     `).join('')}
+                    ${product.caracteristicas.length > 3 ? `
+                        <div class="product-feature">
+                            <i class="fas fa-plus"></i>
+                            <span>+${product.caracteristicas.length - 3} mais</span>
+                        </div>
+                    ` : ''}
                 </div>
                 ` : ''}
                 <div class="product-actions">
@@ -323,7 +306,7 @@ function displayProduct() {
     // Calcular desconto
     const discount = product.precoAntigo ? calculateDiscount(product.precoAntigo, product.preco) : null;
     
-    // Exibir produto
+    // Exibir produto COMPLETO
     productContainer.innerHTML = `
         <div class="product-gallery">
             <div class="main-image">
@@ -361,6 +344,20 @@ function displayProduct() {
                         </div>
                     `).join('')}
                 </div>
+            </div>
+            ` : ''}
+            
+            ${product.especificacoes ? `
+            <div class="product-specs">
+                <h3 class="specs-title">Especificações Técnicas</h3>
+                <ul class="specs-list">
+                    ${product.especificacoes.map(spec => `
+                        <li>
+                            <span class="spec-name">${spec.nome}:</span>
+                            <span class="spec-value">${spec.valor}</span>
+                        </li>
+                    `).join('')}
+                </ul>
             </div>
             ` : ''}
             
@@ -409,6 +406,23 @@ function displayRelatedProducts(currentProductId, category) {
                                     <span class="product-price-current">${product.preco}</span>
                                     ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
                                 </div>
+                                <p class="product-description">${product.descricaoCurta || product.descricao}</p>
+                                ${product.caracteristicas ? `
+                                <div class="product-features">
+                                    ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                                        <div class="product-feature">
+                                            <i class="fas fa-check"></i>
+                                            <span>${caracteristica}</span>
+                                        </div>
+                                    `).join('')}
+                                    ${product.caracteristicas.length > 2 ? `
+                                        <div class="product-feature">
+                                            <i class="fas fa-plus"></i>
+                                            <span>+${product.caracteristicas.length - 2} mais</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                ` : ''}
                                 <div class="product-actions">
                                     <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
                                 </div>
@@ -433,6 +447,23 @@ function displayRelatedProducts(currentProductId, category) {
                             <span class="product-price-current">${product.preco}</span>
                             ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
                         </div>
+                        <p class="product-description">${product.descricaoCurta || product.descricao}</p>
+                        ${product.caracteristicas ? `
+                        <div class="product-features">
+                            ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                                <div class="product-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>${caracteristica}</span>
+                                </div>
+                            `).join('')}
+                            ${product.caracteristicas.length > 2 ? `
+                                <div class="product-feature">
+                                    <i class="fas fa-plus"></i>
+                                    <span>+${product.caracteristicas.length - 2} mais</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        ` : ''}
                         <div class="product-actions">
                             <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
                         </div>
@@ -502,15 +533,21 @@ function displayFilteredProducts(filteredProducts) {
                         <span class="product-price-current">${product.preco}</span>
                         ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
                     </div>
-                    <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
+                    <p class="product-description">${product.descricaoCurta || product.descricao}</p>
                     ${product.caracteristicas ? `
                     <div class="product-features">
-                        ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                        ${product.caracteristicas.slice(0, 3).map(caracteristica => `
                             <div class="product-feature">
                                 <i class="fas fa-check"></i>
                                 <span>${caracteristica}</span>
                             </div>
                         `).join('')}
+                        ${product.caracteristicas.length > 3 ? `
+                            <div class="product-feature">
+                                <i class="fas fa-plus"></i>
+                                <span>+${product.caracteristicas.length - 3} mais</span>
+                            </div>
+                        ` : ''}
                     </div>
                     ` : ''}
                     <div class="product-actions">

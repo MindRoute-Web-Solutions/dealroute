@@ -68,10 +68,48 @@
         display: none !important;
     }
     
+    /* CARROSSEL SECUNDÁRIO MOBILE - MESMO ESTILO */
+    .secondary-carousel {
+        display: block; /* MANTÉM VISÍVEL NO MOBILE */
+    }
+    
+    .secondary-carousel .carrossel-container {
+        padding: 0 15px;
+    }
+    
+    .secondary-carousel .carrossel {
+        gap: 1rem;
+        padding: 1rem 0.5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .secondary-carousel .carrossel::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .secondary-carousel .carrossel-item {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+        margin: 0 auto;
+    }
+    
+    .secondary-carousel .carrossel-btn {
+        display: none !important;
+    }
+    
+    /* Remove o grid que estava sendo mostrado no mobile */
+    #secondary-products .products-grid {
+        display: none;
+    }
+    
     /* Product Cards Mobile - Altura flexível */
     .product-card {
         height: auto; /* Altura automática no mobile */
-        min-height: 480px; /* Altura mínima maior */
+        min-height: 520px; /* Altura mínima maior para mais conteúdo */
     }
     
     .product-image {
@@ -85,7 +123,7 @@
     
     .product-description {
         font-size: 0.9rem; /* Fonte maior no mobile */
-        -webkit-line-clamp: 3; /* Mais linhas no mobile */
+        -webkit-line-clamp: 4; /* Mais linhas no mobile */
     }
     
     /* Product Page Mobile */
@@ -258,18 +296,6 @@
     .faq-item.active .faq-answer {
         padding: 0 1.25rem 1.25rem;
     }
-    
-    /* ========== CARROSSEL SECUNDÁRIO MOBILE ========== */
-    .secondary-carousel {
-        display: none;
-    }
-    
-    #secondary-products .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -298,6 +324,10 @@
         flex: 0 0 90%; /* Mais largura em telas muito pequenas */
     }
     
+    .secondary-carousel .carrossel-item {
+        flex: 0 0 90%; /* Mesma largura para o carrossel secundário */
+    }
+    
     .product-info-detailed .product-title {
         font-size: 1.5rem;
     }
@@ -318,7 +348,7 @@
     }
     
     .product-card {
-        min-height: 460px; /* Altura um pouco menor em telas muito pequenas */
+        min-height: 500px; /* Altura um pouco menor em telas muito pequenas */
     }
     
     /* Filtros Mobile Pequeno */
@@ -361,11 +391,6 @@
     .faq-item.active .faq-answer {
         padding: 0 1rem 1rem;
     }
-    
-    /* CARROSSEL SECUNDÁRIO MOBILE PEQUENO */
-    .secondary-carrossel .carrossel-item {
-        flex: 0 0 90%;
-    }
 }
 
 /* Tablet Styles */
@@ -383,9 +408,13 @@
         flex: 0 0 260px;
     }
     
+    .secondary-carousel .carrossel-item {
+        flex: 0 0 260px; /* Mesma largura para o carrossel secundário */
+    }
+    
     .product-card {
         height: auto; /* Altura flexível no tablet também */
-        min-height: 440px;
+        min-height: 480px;
     }
     
     .product-image {
@@ -406,7 +435,7 @@
     }
 }
 
-/* Desktop: Mostrar carrossel secundário com setas */
+/* Desktop: Mostrar carrossel secundário com MESMAS CONFIGURAÇÕES */
 @media (min-width: 769px) {
     .secondary-carousel {
         display: block;
@@ -414,5 +443,193 @@
     
     #secondary-products .products-grid {
         display: none;
+    }
+    
+    /* Garantir que o carrossel secundário tenha as MESMAS configurações */
+    .secondary-carousel .carrossel-container {
+        position: relative;
+        margin: 2rem 0;
+        padding: 0 40px;
+    }
+    
+    .secondary-carousel .carrossel {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        padding: 1rem 0;
+    }
+    
+    .secondary-carousel .carrossel-item {
+        flex: 0 0 280px; /* MESMA LARGURA DO CARROSSEL PRINCIPAL */
+        background: var(--branco);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid var(--border-color);
+    }
+    
+    .secondary-carousel .carrossel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--branco);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--azul);
+        transition: all 0.3s;
+        z-index: 10;
+        border: 2px solid var(--azul);
+    }
+    
+    .secondary-carousel .carrossel-btn:hover {
+        background: var(--azul);
+        color: var(--branco);
+    }
+    
+    .secondary-carousel .carrossel-btn.prev {
+        left: 0;
+    }
+    
+    .secondary-carousel .carrossel-btn.next {
+        right: 0;
+    }
+}
+
+/* Estilos específicos para quando não há produtos no secundário */
+.no-secondary-products {
+    text-align: center;
+    padding: 2rem;
+    color: var(--cinza-texto);
+}
+
+.no-secondary-products i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}
+
+.no-secondary-products h3 {
+    margin-bottom: 0.5rem;
+    color: var(--preto);
+}
+
+/* Ajustes para carrosseis em telas muito grandes */
+@media (min-width: 1400px) {
+    .carrossel-container {
+        padding: 0 60px;
+    }
+    
+    .secondary-carousel .carrossel-container {
+        padding: 0 60px;
+    }
+    
+    .carrossel-item {
+        flex: 0 0 300px;
+    }
+    
+    .secondary-carousel .carrossel-item {
+        flex: 0 0 300px;
+    }
+}
+
+/* Ajustes de performance para dispositivos com pouca memória */
+@media (max-width: 768px) and (orientation: landscape) {
+    .product-card {
+        min-height: 460px; /* Altura menor em landscape */
+    }
+    
+    .product-image {
+        height: 150px; /* Imagem menor em landscape */
+    }
+}
+
+/* Suporte para dispositivos com notch */
+@supports(padding: max(0px)) {
+    @media (max-width: 768px) {
+        .container {
+            padding-left: max(20px, env(safe-area-inset-left));
+            padding-right: max(20px, env(safe-area-inset-right));
+        }
+        
+        .carrossel-container {
+            padding-left: max(15px, env(safe-area-inset-left));
+            padding-right: max(15px, env(safe-area-inset-right));
+        }
+        
+        .secondary-carousel .carrossel-container {
+            padding-left: max(15px, env(safe-area-inset-left));
+            padding-right: max(15px, env(safe-area-inset-right));
+        }
+    }
+}
+
+/* Melhorias de acessibilidade para modo de alto contraste */
+@media (prefers-contrast: high) {
+    .carrossel-item {
+        border: 2px solid var(--preto);
+    }
+    
+    .secondary-carousel .carrossel-item {
+        border: 2px solid var(--preto);
+    }
+    
+    .product-card {
+        border: 2px solid var(--preto);
+    }
+}
+
+/* Suporte para modo escuro reduzido */
+@media (prefers-color-scheme: dark) {
+    .carrossel-item {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+    
+    .secondary-carousel .carrossel-item {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+}
+
+/* Animações suaves para transições de tela */
+@media (prefers-reduced-motion: no-preference) {
+    .carrossel {
+        scroll-behavior: smooth;
+    }
+    
+    .secondary-carousel .carrossel {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Para usuários que preferem movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+    .carrossel {
+        scroll-behavior: auto;
+    }
+    
+    .secondary-carousel .carrossel {
+        scroll-behavior: auto;
+    }
+    
+    .product-card {
+        transition: none;
+    }
+    
+    .carrossel-item {
+        transition: none;
+    }
+    
+    .secondary-carousel .carrossel-item {
+        transition: none;
     }
 }

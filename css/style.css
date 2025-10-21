@@ -264,7 +264,7 @@ body {
     /* ALTURA FLEXÍVEL - remove altura fixa */
     display: flex;
     flex-direction: column;
-    min-height: 420px; /* Altura mínima segura */
+    min-height: 480px; /* Aumentada para acomodar mais conteúdo */
 }
 
 .product-card:hover {
@@ -606,9 +606,71 @@ body {
     font-size: 0.95rem;
 }
 
-/* Carrossel Secundário */
+/* Carrossel Secundário - MESMO ESTILO DO PRINCIPAL */
 .secondary-carousel {
     margin-top: 1rem;
+}
+
+.secondary-carousel .carrossel-container {
+    position: relative;
+    margin: 2rem 0;
+    padding: 0 40px;
+}
+
+.secondary-carousel .carrossel {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding: 1rem 0;
+}
+
+.secondary-carousel .carrossel-item {
+    flex: 0 0 280px; /* MESMA LARGURA DO CARROSSEL PRINCIPAL */
+    background: var(--branco);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--border-color);
+}
+
+.secondary-carousel .carrossel-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.secondary-carousel .carrossel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--branco);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--azul);
+    transition: all 0.3s;
+    z-index: 10;
+    border: 2px solid var(--azul);
+}
+
+.secondary-carousel .carrossel-btn:hover {
+    background: var(--azul);
+    color: var(--branco);
+}
+
+.secondary-carousel .carrossel-btn.prev {
+    left: 0;
+}
+
+.secondary-carousel .carrossel-btn.next {
+    right: 0;
 }
 
 /* Footer */
