@@ -323,6 +323,7 @@ function initializeFAQAccordion() {
                     const otherAnswer = otherItem.querySelector('.faq-answer');
                     if (otherAnswer) {
                         otherAnswer.style.maxHeight = '0';
+                        otherAnswer.style.padding = '0 1.5rem';
                     }
                 }
             });
@@ -331,9 +332,11 @@ function initializeFAQAccordion() {
             if (!isActive) {
                 item.classList.add('active');
                 answer.style.maxHeight = answer.scrollHeight + 'px';
+                answer.style.padding = '0 1.5rem 1.5rem';
             } else {
                 item.classList.remove('active');
                 answer.style.maxHeight = '0';
+                answer.style.padding = '0 1.5rem';
             }
         });
         
@@ -342,6 +345,59 @@ function initializeFAQAccordion() {
             e.preventDefault();
             this.click();
         });
+    });
+}
+
+// ========== CARROSSEL DE CATEGORIAS MOBILE ==========
+
+function initializeCategoriesCarousel() {
+    if (window.innerWidth > 768) return;
+    
+    const categoriesCarousel = document.getElementById('categories-carousel');
+    if (!categoriesCarousel) return;
+    
+    // Configurar scroll suave
+    categoriesCarousel.style.scrollBehavior = 'smooth';
+    categoriesCarousel.style.scrollSnapType = 'x mandatory';
+    
+    // Touch events para scroll horizontal
+    let startX, startY, scrollLeft, isHorizontalScroll;
+    
+    categoriesCarousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX - categoriesCarousel.offsetLeft;
+        startY = e.touches[0].pageY - categoriesCarousel.offsetTop;
+        scrollLeft = categoriesCarousel.scrollLeft;
+        isHorizontalScroll = false;
+    });
+    
+    categoriesCarousel.addEventListener('touchmove', (e) => {
+        if (!startX || !startY) return;
+        
+        const x = e.touches[0].pageX - categoriesCarousel.offsetLeft;
+        const y = e.touches[0].pageY - categoriesCarousel.offsetTop;
+        
+        // Determinar se é scroll horizontal ou vertical
+        if (!isHorizontalScroll) {
+            const diffX = Math.abs(x - startX);
+            const diffY = Math.abs(y - startY);
+            
+            // Se movimento horizontal for maior que vertical, é scroll horizontal
+            if (diffX > diffY) {
+                isHorizontalScroll = true;
+                e.preventDefault();
+            }
+        }
+        
+        if (isHorizontalScroll) {
+            const walk = (x - startX) * 2;
+            categoriesCarousel.scrollLeft = scrollLeft - walk;
+        }
+    });
+    
+    categoriesCarousel.addEventListener('touchend', () => {
+        startX = null;
+        startY = null;
+        isHorizontalScroll = false;
     });
 }
 
@@ -354,6 +410,7 @@ function initializeResponsiveFeatures() {
     initializeMobileCarousel();
     initializeSecondaryMobileCarousel();
     initializeFAQAccordion();
+    initializeCategoriesCarousel();
 }
 
 // Inicializar quando o DOM estiver pronto
@@ -367,5 +424,6 @@ window.addEventListener('resize', () => {
         initializeMobileCarousel();
         initializeSecondaryMobileCarousel();
         initializeFAQAccordion();
+        initializeCategoriesCarousel();
     }, 250);
 });

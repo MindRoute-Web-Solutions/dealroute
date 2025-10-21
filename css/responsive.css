@@ -261,32 +261,14 @@
     
     /* ========== CARROSSEL SECUNDÁRIO MOBILE ========== */
     .secondary-carousel {
-        padding: 0 15px;
-    }
-    
-    .secondary-carrossel {
-        gap: 1rem;
-        padding: 1rem 0.5rem;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-    
-    .secondary-carrossel::-webkit-scrollbar {
         display: none;
     }
     
-    .secondary-carrossel .carrossel-item {
-        flex: 0 0 85%;
-        scroll-snap-align: center;
-        margin: 0 auto;
-    }
-    
-    /* Remove setas no mobile */
-    .secondary-carousel .carrossel-btn {
-        display: none !important;
+    #secondary-products .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
     }
 }
 
@@ -421,5 +403,16 @@
     
     #category-filter {
         min-width: 180px;
+    }
+}
+
+/* Desktop: Mostrar carrossel secundário com setas */
+@media (min-width: 769px) {
+    .secondary-carousel {
+        display: block;
+    }
+    
+    #secondary-products .products-grid {
+        display: none;
     }
 }

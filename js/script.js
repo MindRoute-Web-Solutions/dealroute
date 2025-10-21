@@ -73,52 +73,88 @@ function displayFeaturedProducts() {
     
     // Carrossel Secundário (Mais Produtos em Destaque)
     if (secondaryProducts.length > 0 && secondaryContainer) {
-        secondaryContainer.innerHTML = `
-            <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
-            <div class="carrossel-container secondary-carousel">
-                <button class="carrossel-btn prev secondary-prev" aria-label="Produtos anteriores">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="carrossel secondary-carrossel" id="secondary-carousel">
+        // Desktop: Carrossel com setas, Mobile: Grid
+        if (window.innerWidth > 768) {
+            secondaryContainer.innerHTML = `
+                <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
+                <div class="carrossel-container secondary-carousel">
+                    <button class="carrossel-btn prev secondary-prev" aria-label="Produtos anteriores">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="carrossel secondary-carrossel" id="secondary-carousel">
+                        ${secondaryProducts.map(product => `
+                            <div class="carrossel-item">
+                                <div class="product-card">
+                                    <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
+                                    <div class="product-info">
+                                        <h3 class="product-name">${product.nome}</h3>
+                                        <div class="product-price-container">
+                                            <span class="product-price-current">${product.preco}</span>
+                                            ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                                        </div>
+                                        <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
+                                        ${product.caracteristicas ? `
+                                        <div class="product-features">
+                                            ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                                                <div class="product-feature">
+                                                    <i class="fas fa-check"></i>
+                                                    <span>${caracteristica}</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                        ` : ''}
+                                        <div class="product-actions">
+                                            <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <button class="carrossel-btn next secondary-next" aria-label="Próximos produtos">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Inicializar carrossel secundário para desktop
+            initializeSecondaryCarousel();
+        } else {
+            // Mobile: Grid normal
+            secondaryContainer.innerHTML = `
+                <h3 class="section-subtitle">Mais Produtos em Destaque</h3>
+                <div class="products-grid">
                     ${secondaryProducts.map(product => `
-                        <div class="carrossel-item">
-                            <div class="product-card">
-                                <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
-                                <div class="product-info">
-                                    <h3 class="product-name">${product.nome}</h3>
-                                    <div class="product-price-container">
-                                        <span class="product-price-current">${product.preco}</span>
-                                        ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
-                                    </div>
-                                    <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
-                                    ${product.caracteristicas ? `
-                                    <div class="product-features">
-                                        ${product.caracteristicas.slice(0, 2).map(caracteristica => `
-                                            <div class="product-feature">
-                                                <i class="fas fa-check"></i>
-                                                <span>${caracteristica}</span>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                    ` : ''}
-                                    <div class="product-actions">
-                                        <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
-                                    </div>
+                        <div class="product-card">
+                            <img src="${product.imagens[0]}" alt="${product.nome}" class="product-image" loading="lazy">
+                            <div class="product-info">
+                                <h3 class="product-name">${product.nome}</h3>
+                                <div class="product-price-container">
+                                    <span class="product-price-current">${product.preco}</span>
+                                    ${product.precoAntigo ? `<span class="product-price-old">${product.precoAntigo}</span>` : ''}
+                                </div>
+                                <p class="product-description">${product.descricaoCurta || product.descricao.substring(0, 80)}...</p>
+                                ${product.caracteristicas ? `
+                                <div class="product-features">
+                                    ${product.caracteristicas.slice(0, 2).map(caracteristica => `
+                                        <div class="product-feature">
+                                            <i class="fas fa-check"></i>
+                                            <span>${caracteristica}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                ` : ''}
+                                <div class="product-actions">
+                                    <a href="produto.html?id=${product.id}" class="btn btn-primary">Saiba Mais</a>
                                 </div>
                             </div>
                         </div>
                     `).join('')}
                 </div>
-                
-                <button class="carrossel-btn next secondary-next" aria-label="Próximos produtos">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        `;
-        
-        // Inicializar carrossel secundário
-        initializeSecondaryCarousel();
+            `;
+        }
     } else if (secondaryContainer) {
         secondaryContainer.innerHTML = '';
     }
