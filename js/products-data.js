@@ -8,7 +8,7 @@ const productsData = [
         "descricaoCurta": "O Fone de ouvido Headphone EVEREST JB950 possui um design totalmente inovador.",
         "preco": "R$ 49,99",
         "precoAntigo": "R$ 130,00",
-        "imagens": ["images/fonejbl/img1.jpg", "images/fonejbl/img2.jpg", "images/fonejbl/img3.jpg"],
+        "imagens": ["images/fonejbl/img1.jpg", "images/fonejbl/img2.jpg", "images/fonejbl/img3.jpg", "images/fonejbl/img4.jpg"],
         "link_afiliado": "https://s.shopee.com.br/LecUNILU3",
         "categoria": "audio",
         "caracteristicas": [
@@ -20,15 +20,15 @@ const productsData = [
             "Tempo de Reprodução até 6 Horas Continuas"
         ],
         "especificacoes": [
-            {"nome": "Marca", "valor": "6.7'' AMOLED 120Hz"},
-            {"nome": "Processador", "valor": "Octa-core 2.8GHz"},
-            {"nome": "RAM", "valor": "8GB"},
-            {"nome": "Armazenamento", "valor": "128GB"},
-            {"nome": "Câmera Principal", "valor": "64MP + 12MP + 8MP"},
-            {"nome": "Câmera Frontal", "valor": "32MP"},
-            {"nome": "Bateria", "valor": "5000mAh"},
-            {"nome": "Carregamento", "valor": "65W rápido"},
-            {"nome": "Sistema", "valor": "Android 13"}
+            {"nome": "Compatibilidade do Áudio", "valor": "Celular, Computador e Notebook"},
+            {"nome": "Conectividade", "valor": "BLUETHOOT ou CABO P2"},
+            {"nome": "Tempo para Carga Total da Bateria", "valor": "2 horas"},
+            {"nome": "Sensibilidade", "valor": "120dB"},
+            {"nome": "Tamanho do Driver", "valor": "40mm"},
+            {"nome": "Material", "valor": "ABS"},
+            {"nome": "Entrada de Carregamento", "valor": "Micro USB V8"},
+            {"nome": "Peso", "valor": "180g"},
+            {"nome": "Impedância", "valor": "320+-15%"}
         ]
     },
     {
